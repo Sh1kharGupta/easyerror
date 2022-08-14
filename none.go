@@ -1,5 +1,7 @@
 package easyerror
 
+// Implements the Option interface. Holds no value.
+// See the interface for documentation of methods.
 type None[T any] struct {}
 
 func (self *None[T]) IsSome() bool {

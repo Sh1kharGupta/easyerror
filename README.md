@@ -1,5 +1,7 @@
 # Easier error handling for Golang
 
+Detailed docs: https://pkg.go.dev/github.com/Sh1kharGupta/easyerror
+
 Golang code can end up looking like the following.
 
 ```go
@@ -135,7 +137,7 @@ func myFunction() Result[myCustomType] {
 
 This is slightly longer than the last code segment but still shorter than the very first code segment.
 
-The `Result` interface offers many more methods to ease writing code. Please read the docs (https://doc.rust-lang.org/std/result/) for a detailed view into the same.
+The `Result` interface offers many more methods to ease writing code. Please read the docs for a detailed view into the same.
 
 ## `Unwrap` and `Catch`
 
@@ -211,7 +213,7 @@ type None[T any] struct {
 ```
 `Option` (`Some`/`None`) is quite similar to `Result` (`Ok`/`Err`) and there is a large overlap in the methods implemented by both. The only difference is that `None` holds no value while `Err` holds an error value. `Option` is useful in cases where the value of the error does not matter or if a function can return some value or no value, e.g., find the starting index of a substring in a string - in this case, `Some[int]` can convey that the substring was found along with its index while `None[int]` can convey that the substring was not found.
 
-The `Option` interface also provides a variety of methods to ease writing code. Please read the docs (https://doc.rust-lang.org/std/option/) for a detailed view into the same.
+The `Option` interface also provides a variety of methods to ease writing code. Please read the docs for a detailed view into the same.
 
 ## Tips
 - There may be times when one is using `defer Catch()` but still wants a panic if a certain `Result` is `Err`. In that case, use `Result.Expect("")`. `Expect()` is similar to `Unwrap()` but it also accepts a string as argument and panics with that string. Panics from `Expect()` go right past `Catch()` as it only catches panics from `Unwrap()`.

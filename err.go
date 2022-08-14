@@ -1,5 +1,7 @@
 package easyerror
 
+// Implements the Result interface. Holds an error value.
+// See the interface for documentation of methods.
 type Err[T any] struct {
 	Error error
 }

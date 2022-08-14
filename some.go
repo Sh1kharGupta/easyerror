@@ -1,5 +1,7 @@
 package easyerror
 
+// Implements the Option interface. Holds some value.
+// See the interface for documentation of methods.
 type Some[T any] struct {
 	Value T
 }

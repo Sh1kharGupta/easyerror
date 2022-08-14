@@ -1,6 +1,6 @@
 # Easier error handling for Golang
 
-Golang code can end up looking like the following,
+Golang code can end up looking like the following.
 
 ```go
 func myFunction() (string, error) {

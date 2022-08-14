@@ -2,7 +2,7 @@ package result
 
 import (
 	"reflect"
-	. "github.com/TheShikharGupta/easyerror"
+	. "github.com/Sh1kharGupta/easyerror"
 )
 
 func Catch[T any](ret *Result[T]) {

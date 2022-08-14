@@ -2,7 +2,7 @@ package option
 
 import (
 	"reflect"
-	. "github.com/TheShikharGupta/easyerror"
+	. "github.com/Sh1kharGupta/easyerror"
 )
 
 type Pair[T1, T2 any] struct {

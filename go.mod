@@ -1,3 +1,3 @@
-module github.com/TheShikharGupta/easyerror
+module github.com/Sh1kharGupta/easyerror
 
 go 1.18

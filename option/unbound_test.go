@@ -3,8 +3,8 @@ package option
 import (
 	"errors"
 	"testing"
-	. "github.com/TheShikharGupta/easyerror"
-	. "github.com/TheShikharGupta/easyerror/test_utils"
+	. "github.com/Sh1kharGupta/easyerror"
+	. "github.com/Sh1kharGupta/easyerror/test_utils"
 )
 
 func TestUnbound(t *testing.T) {

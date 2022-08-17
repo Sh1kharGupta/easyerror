@@ -31,8 +31,8 @@ func TestUnbound(t *testing.T) {
 		return err
 	}
 	Assert(func1(0).UnwrapErr() == myError2) // Should be caught.
-	AssertPanic[Result[int], string](func() Result[int] {return func1(1)}, "expect panic")
-	AssertPanic[Result[int], string](func() Result[int] {return func1(2)}, "raw panic")
+	Assert(func1(1).UnwrapErr().Error() == "expect panic: MyError2") // Should be caught.
+	Assert(Recover[string](func() {func1(2)}) == "raw panic")
 	Assert(func1(3).Unwrap() == 123)
 	Assert(Transpose[int](&Ok[Option[int]]{&Some[int]{123}}).Unwrap().Unwrap() == 123)
 	Assert(Transpose[int](&Ok[Option[int]]{&None[int]{}}).IsNone())

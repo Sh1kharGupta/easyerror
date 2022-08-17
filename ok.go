@@ -30,10 +30,6 @@ func (self *Ok[T]) UnwrapOrElse(defaultFunc func() T) T {
 	return self.Value
 }
 
-func (self *Ok[T]) ExpectErr(msg string) error {
-	panic(msg)
-}
-
 func (self *Ok[T]) UnwrapErr() error {
 	panic("Can't UnwrapErr on Ok!")
 }

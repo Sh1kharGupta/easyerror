@@ -65,8 +65,7 @@ Calling `Map(func(T) T)` on `Ok[T]` applies the given function to `Value T` whil
 
 ```go
 func (self *Ok[T]) Map(transformFunc func(T) T) Result[T] {
-    self.Value = transformFunc(self.Value)
-    return self
+    return &Ok[T]{transformFunc(self.Value)}
 }
 func (self *Err[T]) Map(transformFunc func(T) T) Result[T] {
     return self
@@ -80,7 +79,7 @@ func (self *Ok[T]) Unwrap() T {
     return self.Value
 }
 func (self *Err[T]) Unwrap() T {
-    panic("Can't Unwrap an error!")
+    panic(self)
 }
 ```
 
@@ -201,6 +200,22 @@ This is functionally equivalent to the first snippet. `Catch()` takes a pointer 
 
 This pattern removes a lot of boilerplate code and was inspired by Rust's question mark (?) operator: https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator
 
+## Wrapping errors using `Expect`
+
+In the above snippet, let's say `openFile()` returned `&Err[FileObj]{errors.New("permission denied")}`. That string in itself is not very informative - what was the permission denied for? One can add more context around the error using `Expect()`.
+
+```go
+func myFunction() (ret Result[*string]) {
+    defer result.Catch[*string](&ret)
+    var str string
+    openFile("myFileName.txt").Expect("opening file failed",
+        ).readTo(&str).Expect("reading file failed")
+    return &Ok[*string]{&str}
+}
+```
+
+Now the error string would be `opening file failed: permission denied`. Note that `Expect()` can also be caught using `Catch()`.
+
 ## The `Option` interface
 
 `easyerror` also provides an interface `Option` (again inspired by Rust https://doc.rust-lang.org/std/option/). `Option` is implemented by two structs: `Some` and `None` - one stores a value, the other stores nothing.
@@ -211,12 +226,9 @@ type Some[T any] struct {
 type None[T any] struct {
 }
 ```
-`Option` (`Some`/`None`) is quite similar to `Result` (`Ok`/`Err`) and there is a large overlap in the methods implemented by both. The only difference is that `None` holds no value while `Err` holds an error value. `Option` is useful in cases where the value of the error does not matter or if a function can return some value or no value, e.g., find the starting index of a substring in a string - in this case, `Some[int]` can convey that the substring was found along with its index while `None[int]` can convey that the substring was not found.
+`Option` (`Some`/`None`) is quite similar to `Result` (`Ok`/`Err`) and there is a large overlap in the methods implemented by both. The biggest difference is that `None` holds no value while `Err` holds an error value. `Option` is useful in cases where the value of the error does not matter or if a function can return some value or no value, e.g., find the starting index of a substring in a string - in this case, `Some[int]` can convey that the substring was found along with its index while `None[int]` can convey that the substring was not found.
 
 The `Option` interface also provides a variety of methods to ease writing code. Please read the docs for a detailed view into the same.
-
-## Tips
-- There may be times when one is using `defer Catch()` but still wants a panic if a certain `Result` is `Err`. In that case, use `Result.Expect("")`. `Expect()` is similar to `Unwrap()` but it also accepts a string as argument and panics with that string. Panics from `Expect()` go right past `Catch()` as it only catches panics from `Unwrap()`.
 
 ## UT Coverage
 

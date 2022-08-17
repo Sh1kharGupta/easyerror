@@ -6,12 +6,12 @@ func Assert(expr bool) {
 	}
 }
 
-func AssertPanic[T1 any, T2 comparable](f func() T1, panicWith T2) {
+func Recover[T any](f func()) (ret T) {
 	defer func(){
 		r := recover()
 		Assert(r != nil)
-		v := r.(T2)
-		Assert(v == panicWith)
+		ret = r.(T)
 	}()
 	f()
+	return ret
 }

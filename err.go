@@ -1,5 +1,7 @@
 package easyerror
 
+import "fmt"
+
 // Implements the Result interface. Holds an error value.
 // See the interface for documentation of methods.
 type Err[T any] struct {
@@ -15,7 +17,7 @@ func (self *Err[T]) IsErr() bool {
 }
 
 func (self *Err[T]) Expect(msg string) T {
-	panic(msg)
+	panic(&Err[T]{fmt.Errorf("%s: %w", msg, self.Error)})
 }
 
 func (self *Err[T]) Unwrap() T {
@@ -28,10 +30,6 @@ func (self *Err[T]) UnwrapOr(defaultValue T) T {
 
 func (self *Err[T]) UnwrapOrElse(defaultFunc func() T) T {
 	return defaultFunc()
-}
-
-func (self *Err[T]) ExpectErr(msg string) error {
-	return self.Error
 }
 
 func (self *Err[T]) UnwrapErr() error {

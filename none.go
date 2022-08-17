@@ -12,10 +12,6 @@ func (self *None[T]) IsNone() bool {
 	return true;
 }
 
-func (self *None[T]) Expect(msg string) T {
-	panic(msg)
-}
-
 func (self *None[T]) Unwrap() T {
 	panic(self)
 }

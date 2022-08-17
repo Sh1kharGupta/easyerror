@@ -20,19 +20,16 @@ func TestUnbound(t *testing.T) {
 		case 0:
 			none2.Unwrap()
 		case 1:
-			none2.Expect("expect panic")
-		case 2:
 			panic("raw panic")
-		case 3:
+		case 2:
 			some2.Unwrap()
 			return some
 		}
 		return none
 	}
 	Assert(func1(0) == none) // Should be caught.
-	AssertPanic[Option[int], string](func() Option[int] {return func1(1)}, "expect panic")
-	AssertPanic[Option[int], string](func() Option[int] {return func1(2)}, "raw panic")
-	Assert(func1(3).Unwrap() == 123)
+	Assert(Recover[string](func() {func1(1)}) == "raw panic")
+	Assert(func1(2).Unwrap() == 123)
 	Assert(Transpose[int](&Some[Result[int]]{&Ok[int]{123}}).Unwrap().Unwrap() == 123)
 	Assert(Transpose[int](&Some[Result[int]]{&Err[int]{myError}}).UnwrapErr() == myError)
 	Assert(Transpose[int](&None[Result[int]]{}).Unwrap().IsNone())

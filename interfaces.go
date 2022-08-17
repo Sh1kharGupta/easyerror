@@ -10,10 +10,6 @@ type Option[T any] interface {
 	IsNone() bool
 
 	// Some{Value} -> Value
-	// None{} -> panic(given string)
-	Expect(string) T
-
-	// Some{Value} -> Value
 	// None{} -> panic(self) - can be caught using option.Catch()
 	Unwrap() T
 
@@ -85,7 +81,9 @@ type Result[T any] interface {
 	IsErr() bool
 
 	// Ok{Value} -> Value
-	// Err{Error} -> panic(given string)
+	// Err{Error} -> panic(Err{fmt.Errorf(given string, Error)})
+	// > wraps the underlying Error with given string.
+	// > can be caught with result.Catch()
 	Expect(string) T
 
 	// Ok{Value} -> Value
@@ -99,10 +97,6 @@ type Result[T any] interface {
 	// Ok{Value} -> Value
 	// Err{Error} -> return value of given function
 	UnwrapOrElse(func() T) T
-
-	// Ok{Value} -> panic(given string)
-	// Err{Error} -> Error
-	ExpectErr(string) error
 
 	// Ok{Value} -> panic(generic string)
 	// Err{Error} -> Error

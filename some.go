@@ -14,10 +14,6 @@ func (self *Some[T]) IsNone() bool {
 	return false;
 }
 
-func (self *Some[T]) Expect(msg string) T {
-	return self.Value
-}
-
 func (self *Some[T]) Unwrap() T {
 	return self.Value
 }
